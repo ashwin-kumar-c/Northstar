@@ -1,20 +1,18 @@
 :root {
   --ink: #20223a;
   --muted: #6f7288;
-  --primary: #3c478f;
-  --primary-dark: #303a78;
-  --accent: #f0a93e;
-  --surface: #f6f6fb;
+  --primary: #3a56e8;
+  --accent: #d25f2f;
+  --surface: #eef4ff;
   --border: #e3e3ec;
   font-family:
     Inter, Avenir, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: var(--ink);
-  background: #fffdf9;
+  background: #fbfbfd;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
 }
 
 * {
@@ -25,14 +23,19 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  background:
+    linear-gradient(135deg, rgba(58, 86, 232, 0.12), transparent 34%),
+    linear-gradient(315deg, rgba(210, 95, 47, 0.14), transparent 32%),
+    #fbfbfd;
 }
 
 button,
-a {
+input {
   font: inherit;
 }
 
-a:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: 3px solid rgba(60, 71, 143, 0.35);
   outline-offset: 4px;
 }
