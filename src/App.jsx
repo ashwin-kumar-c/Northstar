@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
+  const unusedDemoValue = 'ESLint demo' // remove to fix es lint
   const [serverMessage, setServerMessage] = useState('Checking backend...')
   const [serverTime, setServerTime] = useState('')
   const [name, setName] = useState('')
