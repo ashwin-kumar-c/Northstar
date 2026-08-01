@@ -61,15 +61,15 @@ pipeline {
                 sh 'npm audit --audit-level=high'
             }
         }
+    }
 
         post {
-            always {
-                archiveArtifacts artifacts: 'dist/**,coverage/**', allowEmptyArchive: true
-                junit allowEmptyResults: true, testResults: 'junit.xml'
-            }
-            success {
-                echo 'Frontend pipeline completed successfully'
-            }
+        always {
+            archiveArtifacts artifacts: 'dist/**,coverage/**', allowEmptyArchive: true
+            junit allowEmptyResults: true, testResults: 'junit.xml'
+        }
+        success {
+            echo 'Frontend pipeline completed successfully'
         }
     }
 }
