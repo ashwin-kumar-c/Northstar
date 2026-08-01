@@ -1,0 +1,69 @@
+pipeline {
+    agent {
+        docker {
+            image 'node:22-alpine'
+            reuseNode true
+        }
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                sh 'npm run lint'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                sh 'npm test -- --ci'
+            }
+        }
+
+        stage('Code coverage') {
+            steps {
+                sh 'npm test -- --ci --coverage'
+            }
+
+            post {
+                always {
+                    publishHTML([
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'coverage/lcov-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Code Coverage'
+                    ])
+                }
+            }
+        }
+
+        stage('Security Scan') {
+            steps {
+                sh 'npm audit --audit-level=high'
+            }
+        }
+
+        post {
+            always {
+                archiveArtifacts artifacts: 'dist/**,coverage/**', allowEmptyArchive: true
+                junit allowEmptyResults: true, testResults: 'junit.xml'
+            }
+            success {
+                echo 'Frontend pipeline completed successfully'
+            }
+        }
+    }
+}
