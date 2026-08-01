@@ -6,6 +6,11 @@ pipeline {
         }
     }
 
+    environment {
+    EC2_HOST = '107.20.25.36'
+    EC2_USER = 'ubuntu'
+}
+
     stages {
         stage('Checkout') {
             steps {
@@ -59,6 +64,23 @@ pipeline {
         stage('Security Scan') {
             steps {
                 sh 'npm audit --audit-level=high'
+            }
+        }
+
+        stage('Deploy frontend to EC2') {
+
+            steps {
+                sh 'apk add --no-cache openssh-client rsync'
+
+                sshagent(credentials: ['ec2-deploy-key']) {
+                    sh '''
+                        mkdir -p ~/.ssh
+                        ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
+
+                        rsync -az --delete dist/ \
+                        "$EC2_USER@$EC2_HOST:/var/www/my-demo-app/"
+                    '''
+                }
             }
         }
     }
